@@ -1,4 +1,4 @@
-// Purpose: A simple web server that serves HTML files with embedded weather data on the home page.
+// // Purpose: A simple web server that serves HTML files with embedded weather data on the home page.
 
 
 const http = require("http");
@@ -54,10 +54,9 @@ function serveHtml(filePath, req, res) {
       // Prepare the weather information to be displayed
       const weatherInfo = result[0].current; 
       const locationInfo = result[0].location;
-      // Adapt this line if the structure of result is different
       const weatherHtml = `<h2>${locationInfo.name}</h2>
                            <h3>${weatherInfo.skytext}</h3>
-                           <p>Temperature: ${weatherInfo.temperature}</p>
+                           <p>Temperature: ${weatherInfo.temperature}&deg;C</p>
                            <p>Humidity: ${weatherInfo.humidity}%</p>
                            <p>Wind: ${weatherInfo.winddisplay}</p>`;
       
@@ -69,9 +68,11 @@ function serveHtml(filePath, req, res) {
           return;
         }
 
+        // Use response.write() as required
         const updatedContent = content.replace('{{weather}}', weatherHtml);
         res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(updatedContent);
+        res.write(updatedContent); // Send the content using response.write()
+        res.end(); // End the response
       });
     });
   } else {
@@ -86,8 +87,10 @@ function serveHtml(filePath, req, res) {
           res.end("500 Internal Server Error");
         }
       } else {
+        // Use response.write() as required
         res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(content, "utf-8");
+        res.write(content); // Send the content using response.write()
+        res.end(); // End the response
       }
     });
   }

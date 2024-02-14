@@ -41,6 +41,7 @@ function logEvent(message) {
 
 // Function to serve HTML files with embedded weather data for the home page
 function serveHtml(filePath, req, res) {
+  console.log(`Serving request for ${req.url}`); // Log the requested URL
   if (req.url === "/") {
     // Fetch the weather data for a specific location
     weather.find({ search: 'Gander, NL', degreeType: 'C' }, function(err, result) {
